@@ -1,0 +1,16 @@
+cambiar nombre clase AdministrarPeticion a algo que no lleve "administrar": mal termino
+refactorizar en general
+
+- Crear un registro de los usuarios que solicitan una página al servidor y visualizar ese registro
+- Especificar el número de peticiones simultaneas que puede responder el servidor.
+- Filtrar o no las peticiones a partir de una IP o grupo de IPs
+- Registrar tipos MIME soportados por el server (??)
+
+Configuracion al agregar un directorio
+- Especificar el documento principal de la aplicacion.
+- Si el usuario puede o no visualizar la estructura de ficheros y dirs de la app web.
+- Si se genera respuesta en Gzip
+- Establecer la pagina de error en caso de que el usuario no se encuentre o exista.
+
+
+DIAGRAMA DE CLASES FINAL CON PEQUEÑA DESCRIPCION DE CADA CLASE

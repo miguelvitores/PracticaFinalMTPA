@@ -1,0 +1,388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html>
+<!-- Mirrored from www.dpgraph.com/implicit-equations.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 May 2018 23:37:58 GMT -->
+<head><meta name="MSSmartTagsPreventParsing" content="TRUE">
+
+<title>DPGraph Documentation</title>
+<meta name=author content="DPGraph">
+<meta http-equiv="content-type" content="text/html; charset=us-ascii">
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.rsac.org/ratingsv01.html" l r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l r (SS~~000 1))'>
+
+</head><body>
+
+<center><table border=4 bgcolor="#FFFFFF"><tr align=center bgcolor="#FF0000"><td><font face="Arial, Helvetica" size="+1" color="#FFFFFF"><b>&nbsp;DPGraph Documentation&nbsp;</b></font></td></tr>
+<tr align=center bgcolor="#FFFFCC"><td><font size="-1" face="Arial, Helvetica">&nbsp;<a href="index-2.html">Home</a> | <a href="buy-graphing.html">Buy</a> | <a href="graph-viewer.html">Free Viewer</a> | <a href="graphing-users.html">Legacy Site Licensees</a>&nbsp;<br>&nbsp;<a href="new-3d-graphs.html">Latest news: 12 Nov 2017</a> | <a href="update-grapher.html">Update to newest version: 19 Dec 2016</a>&nbsp;<br>&nbsp;<a href="math-art.html">Math Art Gallery</a> | <a href="implicit-equations.html">Documentation</a> | <a href="graphing-links.html">Links</a> | <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a>&nbsp;</font></td></tr></table></center>
+
+<p><font size="-1" face="Arial, Helvetica"><b>After you have downloaded and installed either the <a
+href="buy-graphing.html">full version of DPGraph</a> or the <a
+href="graph-viewer.html">free DPGraph Viewer</a></b> you can click on the thumbnail
+pictures to view and manipulate the graphs.
+<b>If your version of DPGraph or
+the DPGraph Viewer can't display a graph</b> then you may need to <a
+href="update-grapher.html">update to the most recent version</a>.
+To view the commands that created
+the graphs, click on Edit inside DPGraph or the Viewer.  <b>Some versions of
+Netscape require you to stop and restart your browser after installing.</b></font></p>
+
+<p><font size="-1" face="Arial, Helvetica"><b>New!</b> French translations of some of the DPGraph documention, by
+Laurent Hivon.  The files are in pdf format:  <a href="aide.html">DPGraph Online
+Help (in French), by Laurent Hivon</a> and the <a href="dpexemples.html">DPGraph
+Parametric Graphing Examples (in French), by Laurent Hivon</a>.</font></p>
+
+<table width="51%" align=right><tr align=center valign=top>
+<td width="15%"><font size="-2" face="Arial, Helvetica"><a href="mvcltube.dpg"><img src="mvcltube.gif" alt="Animated color tube" width=96 height=72></a><br><br>&nbsp;</font></td>
+<td width="15%"><font size="-2" face="Arial, Helvetica"><a href="tubeknot.dpg"><img src="tubeknot.jpg" alt="Tube Knot" width=96 height=72></a><br><br>&nbsp;</font></td>
+<td width="15%"><font size="-2" face="Arial, Helvetica"><a href="coaster.dpg"><img src="coaster.gif" alt="Rollercoaster" width=96 height=72></a><br><br>&nbsp;</font></td>
+</tr></table>
+
+<p><font size="-1" face="Arial, Helvetica"><b><a href="parametric-equations.html">Click here for the documentation on
+parametric curves and surfaces, including examples.</a></b> Information on
+creating implicit and vector graphs is below.  There are also hundreds of
+examples in the gallery, and hundreds of examples are included with DPGraph and
+the DPGraph Viewer.</font></p>
+
+<br clear=all>
+
+<table width="100%" cellpadding=0 align=center><tr align=center valign=top>
+
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="sphereh.dpg"><img src="sphereh.jpg" alt="Picture of a sphere" width=96 height=72></a><br>DPGraph graphs implicit 3D equations, so the sphere x^2 + y^2 + z^2 = 9 is as easy as GRAPH3D(X^2 + Y^2 + Z^2 = 9) or GRAPH3D( RHO=3 ) in spherical coordinates.  No need to solve for z or to use parametric forms.<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="planes.dpg"><img src="planes.jpg" alt="Picture of three planes intersecting at a point" width=96 height=72></a><br>DPGraph can plot multiple equations.  To show students three planes intersecting at a point, just GRAPH3D( (X=1, Y=1, Z=1) ).<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="glynnh.dpg"><img src="glynnh.jpg" alt="Picture of a complicated surface" width=96 height=72></a><br>GRAPH3D(SIN(2*X) + SIN(2*Y) = SIN(2*Z)) produces this amazing Schwarz's P surface, contributed by Jerry Glynn.<br>&nbsp;</font></td>
+
+</tr></table><table width="100%" cellpadding=0 align=center><tr align=center valign=top>
+
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="func.dpg"><img src="func.jpg" alt="Picture of a function of x and y" width=96 height=72></a><br>Regular z=f(x,y) plots are special cases of implicit plots. Here is GRAPH3D(Z = 6*COS(X^2 + Y^2)*E^(-SQRT(X^2 + Y^2))).<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="ineq.dpg" name="3dinequality"><img src="ineq.jpg" alt="Picture of a 3D inequality" width=96 height=72></a><br>3D inequalities are no problem for DPGraph.  Graphing |xyz| &lt;= 2 is as easy as GRAPH3D(|X*Y*Z| &lt;= 2).  The inequality is true on the "true blue" side, and false on the red side.  DPGraph added some blue to the red side, making it more magenta, to show that the inequality is true for the surface itself.<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="applech.dpg" name="volumeofintersection"><img src="applech.jpg" alt="Picture of a volume of intersection" width=96 height=72></a><br>Multiple simultaneous 3D inequalities are also easy.  Either put them in a list, like the intersecting planes above, or put &amp;'s between them to get a volume of intersection.  Here's the inside of a sphere intersected with the outside of a torus:  GRAPH3D(X^2 + Y^2 + Z^2 &lt;= 9 &amp; Z^2 + (SQRT(X^2 + Y^2) - 2.5)^2 &gt;= 2).<br>&nbsp;</font></td>
+
+</tr></table><table width="100%" cellpadding=0 align=center><tr align=center valign=top>
+
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="clrshell.dpg" name="clrshell"><img src="clrshell.jpg" alt="Colored surface" width=96 height=72></a><br>You can use the color of the surface to encode an extra dimension of information.  This seashell, contributed by Hassan Sedaghat, has been colored by setting GRAPH3D.COLOR := THETA in spherical coordinates.  The fractional part of the color expression is mapped to a color wheel that goes from red at 0, through magenta, blue, cyan, green, yellow, and back to red at 1.<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="equipot.dpg" name="3dlevel"><img src="equipot.jpg" alt="Graph of level surfaces" width=96 height=72></a><br>If you'd like to display the level surfaces (equipotentials, isothermals, etc.) of a function f(x,y,z) at multiples of d, then graph sin(pi*f(x,y,z)/d)=0.  For example, here's how to generate the level surfaces of (xy + yz + zx) at multiples of 3.0:  GRAPH3D(SIN(PI*((X*Y) + (Y*Z) + (Z*X))/3.0) = 0).<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="equipot.dpg" name="slice"><img src="slice.gif" alt="Slice of level surfaces" width=96 height=72></a><br>One way to make a graph move is to use DPGraph's scrollbar to slice through it in the x, y, or z directions in real time.  Here's a movie of the slicer sweeping through the previous level surfaces, showing what the inside of the graph looks like.  Inside DPGraph, click on Scrollbar -> X (or Y or Z) slice -> OK.<br>&nbsp;</font></td>
+
+</tr></table><table width="100%" cellpadding=0 align=center><tr align=center valign=top>
+
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="hyperbol.dpg" name="4dgraph"><img src="hyperbol.gif" alt="Snapshot of a moving graph" width=96 height=72></a><br>A second way to make a graph move is to use TIME as a variable.  Here's a snapshot of the movie GRAPH3D(X^2 + Y^2 + SIN(TIME) = Z^2):  a hyperboloid moving from one sheet to two.<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="surrev.dpg" name="surfaceofrevolution"><img src="surrev.gif" alt="Snapshot of a surface of revolution" width=96 height=72></a><br>A third way to make a graph move is to change the variables A, B, C, or D in real time using DPGraph's scrollbar.  Here's a snapshot showing the surface of revolution z=x^2+y^2 being generated as A is swept from 0 to 2*pi in GRAPH3D(Z = (X^2+Y^2) * ONE((PI-ANGLE(-X,Y))/A)).<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="bell.dpg" name="statistics"><img src="bell.jpg" alt="Bell Curve" width=96 height=72></a><br>A fourth way to make any graph move is to zoom and rotate it using the Home, Page Up, Page Down, and arrow keys.  Use the up arrow key to see what's inside this bell curve contributed by Jerry Thornhill.<br>&nbsp;</font></td>
+
+</tr></table><table width="100%" cellpadding=0 align=center><tr align=center valign=top>
+
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="truncbyh.dpg" name="rotation"><img src="truncbyh.gif" alt="Truncated Sphere" width=96 height=72></a><br>A fifth way to make any graph move is to click on ANIMATE from inside DPGraph and select continuous rotation.<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="clrsph.dpg" name="clrsph"><img src="clrsph.gif" alt="Colored sphere" width=96 height=72></a><br>A sixth way to make a graph move is to make the color of the surface time-dependent. This sphere has GRAPH3D.COLOR := (SIN(X+TIME)+SIN(Y))/3.<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="jellyfis.dpg" name="transparency"><img src="jellyfis.gif" alt="Jellyfish Head graph" width=96 height=72></a><br>In addition to using the slicer, another way to see inside a surface is to make it transparent.  This is a movie of a jellyfish head, contributed by Michael Parker.<br>&nbsp;</font></td>
+
+</tr></table><table width="100%" cellpadding=0 align=center><tr align=center valign=top>
+
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="sineparm.dpg" name="2dgraph"><img src="sineparm.gif" alt="Picture of a 2D sine curve" width=96 height=72></a><br>You can set DPGraph's parameters to do 2D graphs, too.  This graph lets you use DPGraph's scrollbar to change the variables A, B, and C to explore the classic sine curve y=a sin(bx+c) using GRAPH3D((Y = A*SIN(B*X+C), X=0, Y=0)).<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="lisellip.dpg" name="2dimplicit"><img src="lisellip.jpg" alt="Picture of multiple 2D implicit graphs" width=96 height=72></a><br>Notice that the coordinate axes are drawn as the 2D implicit plots x = 0 and y = 0. You can put as many 2D plots as you'd like into the list.  For example, here is GRAPH3D((A*X^2+B*Y^2=C^2, X^2=SIN(Y^2), X=0, Y=0)).<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="ineq2d.dpg" name="2dinequality"><img src="ineq2d.jpg" alt="Inside of a circle" width=96 height=72></a><br>2D inequalities are special cases of 3D inequalities, so DPGraph can draw them with ease.  For example, to fill the inside of the circle x^2+y^2&lt;6, just GRAPH3D((X^2+Y^2&lt;6 &amp; Z&gt;0, X=0, Y=0 )).<br>&nbsp;</font></td>
+
+</tr></table><table width="100%" cellpadding=0 align=center><tr align=center valign=top>
+
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="mineq2d.dpg" name="2dtime"><img src="mineq2d.gif" alt="Complicated 2D inequality" width=96 height=72></a><br>Here is a snapshot from a movie of a more complicated set of 2D inequalities:  (y&lt;dx &amp; y&lt;a sin(bx+c) &amp; x^2+y^2&lt;6|sin(t/3)|) and (y&gt;dx &amp; y&gt;asin(bx+c) &amp; x^2+y^2&gt;6|sin(t/3)|).  While the circle pulses in and out, you can use DPGraph's scrollbar to change A, B, C, and D to vary the parameters for the sine curve and the slope of the line.<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="flow.dpg" name="2dlevel"><img src="flow.gif" alt="Two dimensional flow" width=96 height=72></a><br>As with 3D, DPGraph can display 2D level curves.  This is handy for viewing everything from complex variable conformal maps to the characteristic curves of partial differential equations.  Here's a snapshot from a movie of equipotential lines "flowing" along streamlines from the source on the right to the sink on the left.  You can use DPGraph's scrollbar to adjust A (the distance of the source or the sink from the origin) and C (the strength of the source or the sink).<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="contouri.dpg" name="2dcontour"><img src="contouri.jpg" alt="Contour plot" width=96 height=72></a><br>Another kind of 2D plot is a contour plot of a 3D graph.  Here is a contour plot of z = 3 sin(x) sin(y):  GRAPH3D(Z = 3*SIN(X)*SIN(Y)).  Red is high in elevation, blue is low.<br>&nbsp;</font></td>
+
+</tr></table><table width="100%" cellpadding=0 align=center><tr align=center valign=top>
+
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="seasick.dpg" name="7dvector"><img src="seasick.gif" alt="Seasick graph" width=96 height=72></a><br>DPGraph lets you display 7D graphs (3D arrays of time-dependent 3D vectors).  Here is GRAPH3D( VECTOR(-SIN(THETA+TIME)/6, COS(THETA+TIME)/6, 0) ).<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="clrsea.dpg" name="8dvector"><img src="clrsea.gif" alt="Colored vector field" width=96 height=72></a><br>DPGraph even lets you display 8D graphs -- here is a 3D array of time-dependent 3D vectors, using color as an extra dimension to show a pressure wave propagating through the moving vectors by setting GRAPH3D.VECTORCOLOR := X/6+TIME/6.<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="onevec.dpg" name="onevec"><img src="onevec.jpg" alt="One Vector graph" width=96 height=72></a><br>If you would only like a few vectors instead of a whole field of them, you can use the NEAR function to select a subset of the vectors.  Here is GRAPH3D( VECTOR( NEAR(0,0,0)*A,B,C ) ):  a single vector, centered around the origin, that you can move around using the Scrollbar to vary A, B, and C.<br>&nbsp;</font></td>
+
+</tr></table><table width="100%" cellpadding=0 align=center><tr align=center valign=top>
+
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="stelocth.dpg" name="prealgebra"><img src="stelocth.jpg" alt="Picture of a stellated octahedron" width=96 height=72></a><br>Ironically, because of its advanced capabilities DPGraph is excellent for demonstrating the beauty of math to beginning students.  This stellated octahedron contributed by &#1042;&#1083;&#1072;&#1076;&#1080;&#1084;&#1080;&#1088; &#1057;&#1084;&#1080;&#1088;&#1085;&#1086;&#1074; (Vladimir Smirnov) is an example of what can be done with the absolute value function.<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="hearth.dpg" name="valentine"><img src="hearth.jpg" alt="Picture of a Valentine heart" width=96 height=72></a><br>Kids don't have to know much math to love using DPGraph.  My seven year old son pasted this 3D heart from DPGraph into Greetings Workshop to make his Valentine cards.<br>&nbsp;</font></td>
+<td width="30%"><font size="-2" face="Arial, Helvetica"><a href="icecream.dpg" name="icecream"><img src="icecream.jpg" alt="Ice Cream for Kids graph" width=96 height=72></a><br>Kids love ice cream, too.  Here is a bowlful contributed by &#1057;&#1077;&#1088;&#1075;&#1077;&#1081; &#1046;&#1076;&#1072;&#1085;&#1086;&#1074; (Sergei Zhdanov).<br>&nbsp;</font></td>
+
+</tr></table>
+
+<p><font size="-1" face="Arial, Helvetica"><b>FOLLOWING IS A COPY OF THE ONLINE HELP AVAILABLE INSIDE DPGRAPH.</b></font></p>
+
+<p><font size="-1" face="Arial, Helvetica">Dynamic Photorealistic Graphing (DPGraph) -- the world's most powerful 2D
+through 8D graphing software, optimized for the internet.</font></p>
+
+<p><font size="-1" face="Arial, Helvetica">Version 2016.12.19.  Visit www.dpgraph.com for the full documentation, or
+click on Open and then Edit to examine the sample files for useful tips; this
+online help is a summary.  Copying DPGraph for unlicensed users is illegal.
+DPGraph is a trademark of DPGraph.  Other company and products names are
+trademarks or registered trademarks of their respective companies.  Copyright
+(C) 1997-2016 by DPGraph.  All rights reserved.</font></p>
+
+<p><font size="-1" face="Arial, Helvetica"><b>COMMON ERRORS:</b> The seven most common mistakes when creating graphs in
+the EDIT dialog box are:  1) leaving out asterisks for multiplication; 2)
+leaving out equals signs or inequality signs; 3) leaving out the parentheses for
+lists; 4) trying to use equalities in intersections (DPGraph can only intersect
+inequalities, i.e. regions of space); and 5) putting a space inside the
+two-character symbols :=, &gt;=, or &lt;=;
+6) using the parametric variables u or v in implicit graphs; and
+7) using the implicit variables x, y, z, r, theta, rho, or phi in parametric graphs.</font></p>
+
+<table>
+<tr align=center><td><font size="-1" face="Arial, Helvetica">Wrong:</font></td><td><font size="-1" face="Arial, Helvetica">Right:</font><td></tr>
+<tr align=left><td><code>graph3d( 3x = z^2 )</code></td><td><code>graph3d( 3*x = z^2 )</code></td></tr>
+<tr align=left><td><code>graph3d( x^2+y^2 )</code></td><td><code>graph3d( z = x^2+y^2 )</code></td></tr>
+<tr align=left><td><code>graph3d( x=1, y=1 )</code></td><td><code>graph3d( ( x=1, y=1 ) )</code></td></tr>
+<tr align=left><td><code>graph3d( x=1 & y=1 )</code></td><td><code>graph3d( x&gt;1 & y&gt;=1 )</code></td></tr>
+<tr align=left><td><code>graph3d( z^2&gt; =x^2 )</code></td><td><code>graph3d( z^2 &gt;= x^2 )</code></td></tr>
+<tr align=left><td><code>graph3d( z=u^2+v^2 )</code></td><td><code>graph3d( z=x^2+y^2 )</code></td></tr>
+<tr align=left><td><code>graph3d( rectangular(x,y,sin(x+y)) )</code></td><td><code>graph3d( rectangular(u,v,sin(u+v)) )</code></td></tr>
+</table>
+
+<p><font size="-1" face="Arial, Helvetica"><b>INEQUALITIES:</b> When graphing an inequality, such as GRAPH3D( X&gt;1 ),
+remember that "blue is true"; the bluest side of the graph is the region of
+space for which the inequality is true, the reddest side of the graph is the
+region of space for which the inequality is false.  If the inequality is true
+for the surface itself, as in GRAPH3D( X&gt;=1 ), then the bluest side is pure
+blue; if the inequality is false for the surface itself, as in GRAPH3D( X&gt;1
+), then the reddest side is pure red.</font></p>
+
+<p><font size="-1" face="Arial, Helvetica"><b>DEFAULTS.DPG:</b> With experience you may find the following technique
+useful when exploring a new surface.  OPEN the file DEFAULTS.DPG, go to EDIT,
+modify the default equation, and then EXECUTE.  Since all of the options are
+already in DEFAULTS.DPG they can be changed with very little typing.  If you
+like, SAVE the modified file under a different name and it will be ready for
+future viewing and adjustments.</font></p>
+
+<p><font size="-1" face="Arial, Helvetica"><b>RESOLUTION:</b> The easiest way to improve the appearance of some graphs
+is to increase the resolution.  The default resolution is 21 by 21 by 21 for implicit graphs, and 40 by 40 for parametric surfaces.  To
+change the resolution for implicit graphs, use the EDIT dialog box to insert a line such as the
+following before the GRAPH3D command:</font></p>
+
+<pre>graph3d.resolution := 30
+</pre>
+
+<p><font size="-1" face="Arial, Helvetica">For parametric surfaces:</font></p>
+
+<pre>graph3d.stepu := 50
+graph3d.stepsv := 50
+</pre>
+
+<p><font size="-1" face="Arial, Helvetica">You may find it useful to use the technique described in the previous
+section on DEFAULTS.DPG.</font></p>
+
+<p><font size="-1" face="Arial, Helvetica"><b>COPYING A GRAPH TO THE CLIPBOARD:</b> Click on CLIPBOARD to copy a
+picture of the graph to the clipboard.  To copy a picture of the entire window
+(including the border, etc.) to the clipboard, simultaneously press down the ALT
+and PRINTSCREEN keys.  To copy a picture of the whole screen to the clipboard,
+press PRINTSCREEN.</font></p>
+
+<p><font size="-1" face="Arial, Helvetica"><b>COPYING A GRAPH INTO ANOTHER APPLICATION:</b> If the other application
+supports pasting, first copy the graph to the clipboard.  Then click on EDIT in
+the other application, then click on PASTE.</font></p>
+
+<p><font size="-1" face="Arial, Helvetica"><b>PRINTING A GRAPH:</b> First copy the the graph to an application, such as
+Word or Paint, that supports printing.  Then click on FILE in the other
+application, then click on PRINT.</font></p>
+
+<p><font size="-1" face="Arial, Helvetica"><b>FILE FORMAT:</b>  DPGraph files have a file type of .DPG.  There are two
+kinds of DPG files: binary and ASCII.  DPGraph can read and write
+either type of DPG file, but the DPGraph Viewer can only read binary
+DPG files.
+Binary DPG files are
+compressed and contain error detection information for more reliable
+transmission.  ASCII DPG files are readable and editable by Notepad and many other
+text editors.  Each line in the file is a separate command for
+DPGraph.  For example, a file might look like this:</font></p>
+
+<pre>graph3d.view:=top
+graph3d.perspective:=false
+graph3d(z=3*sin(x*y))
+</pre>
+
+<p><font size="-1" face="Arial, Helvetica">Each command must start on a separate line.  The GRAPH3D command must be the
+last command.</font></p>
+
+<p><font size="-1" face="Arial, Helvetica"><b>UNINSTALLATION:</b> There are two ways to remove DPGraph from your
+hard disk drive.  Method 1:  click on START - SETTINGS - CONTROL PANEL -
+ADD/REMOVE PROGRAMS, then scroll to DPGraph in the window, select it, and
+click on ADD/REMOVE.  Method 2:  click on START - PROGRAMS - DPGRAPH -
+UNINSTALL.</font></p>
+
+<p><font size="-1" face="Arial, Helvetica"><b>OPTIONS:</b> Non-numeric default values are given in capital
+letters.</font></p>
+<table cellpadding=0>
+<tr valign=top><td><code>graph3d.resolution</code></td><td><font size="-1" face="Arial, Helvetica">(resolution along longest side of box, default is 21; other sides of box have a resolution proportional to the length of the side)</font></td></tr>
+<tr valign=top><td><code>graph3d.mesh</code></td><td><font size="-1" face="Arial, Helvetica">(TRUE or false)</font></td></tr>
+<tr valign=top><td><code>graph3d.perspective</code></td><td><font size="-1" face="Arial, Helvetica">(TRUE or false)</font></td></tr>
+<tr valign=top><td><code>graph3d.box</code></td><td><font size="-1" face="Arial, Helvetica">(TRUE or false)</font></td></tr>
+<tr valign=top><td><code>graph3d.view</code></td><td><font size="-1" face="Arial, Helvetica">(STANDARD, top, side, front, or textbook)</font></td></tr>
+<tr valign=top><td><code>graph3d.contrast</code></td><td><font size="-1" face="Arial, Helvetica">(default is 1/2, range is 0 to 1)</font></td></tr>
+<tr valign=top><td><code>graph3d.transparency</code></td><td><font size="-1" face="Arial, Helvetica">(default is 0, range is 0 to 1)</font></td></tr>
+<tr valign=top><td><code>graph3d.background</code></td><td><font size="-1" face="Arial, Helvetica">(black, gray, WHITE, brown, red, yellow, green, cyan, blue, or magenta)</font></td></tr>
+<tr valign=top><td><code>graph3d.color</code></td><td><font size="-1" face="Arial, Helvetica">(BYHEIGHT, bysteepness, black, gray, white, brown, red, yellow, green, cyan, blue, magenta, or an expression depending on x, y, z, or time)</font></td></tr>
+<tr valign=top><td><code>graph3d.highlight</code></td><td><font size="-1" face="Arial, Helvetica">(default is 0, range is 0 to 1)</font></td></tr>
+<tr valign=top><td><code>graph3d.shading</code></td><td><font size="-1" face="Arial, Helvetica">(default is 0, range is 0 to 1)</font></td></tr>
+<tr valign=top><td><code>graph3d.vectorcolor</code></td><td><font size="-1" face="Arial, Helvetica">(BYHEIGHT, bysteepness, black, gray, white, brown, red, yellow, green, cyan, blue, magenta, or an expression depending on x, y, z, or time)</font></td></tr>
+<tr valign=top><td><code>graph3d.vectorhighlight</code></td><td><font size="-1" face="Arial, Helvetica">(default is 0, range is 0 to 1)</font></td></tr>
+<tr valign=top><td><code>graph3d.vectorshading</code></td><td><font size="-1" face="Arial, Helvetica">(default is 0, range is 0 to 1)</font></td></tr>
+<tr valign=top><td><code>graph3d.vectoralign</code></td><td><font size="-1" face="Arial, Helvetica">(TAIL, center, or tip)</font></td></tr>
+<tr valign=top><td><code>graph3d.vectorarrowhead</code></td><td><font size="-1" face="Arial, Helvetica">(true or FALSE)</font></td></tr>
+<tr valign=top><td><code>graph3d.minimumx</code></td><td><font size="-1" face="Arial, Helvetica">(default is -3)</font></td></tr>
+<tr valign=top><td><code>graph3d.maximumx</code></td><td><font size="-1" face="Arial, Helvetica">(default is 3)</font></td></tr>
+<tr valign=top><td><code>graph3d.minimumy</code></td><td><font size="-1" face="Arial, Helvetica">(default is -3)</font></td></tr>
+<tr valign=top><td><code>graph3d.maximumy</code></td><td><font size="-1" face="Arial, Helvetica">(default is 3)</font></td></tr>
+<tr valign=top><td><code>graph3d.minimumz</code></td><td><font size="-1" face="Arial, Helvetica">(default is -3)</font></td></tr>
+<tr valign=top><td><code>graph3d.maximumz</code></td><td><font size="-1" face="Arial, Helvetica">(default is 3)</font></td></tr>
+<tr valign=top><td><code>graph3d.minimumu</code></td><td><font size="-1" face="Arial, Helvetica">(default is -3)</font></td></tr>
+<tr valign=top><td><code>graph3d.maximumu</code></td><td><font size="-1" face="Arial, Helvetica">(default is 3)</font></td></tr>
+<tr valign=top><td><code>graph3d.stepsu</code></td><td><font size="-1" face="Arial, Helvetica">(default is 40)</font></td></tr>
+<tr valign=top><td><code>graph3d.minimumv</code></td><td><font size="-1" face="Arial, Helvetica">(default is -3)</font></td></tr>
+<tr valign=top><td><code>graph3d.maximumv</code></td><td><font size="-1" face="Arial, Helvetica">(default is 3)</font></td></tr>
+<tr valign=top><td><code>graph3d.stepsv</code></td><td><font size="-1" face="Arial, Helvetica">(default is 40)</font></td></tr>
+<tr valign=top><td><code>a.minimum</code></td><td><font size="-1" face="Arial, Helvetica">(scrollbar variable minimum value)</font></td></tr>
+<tr valign=top><td><code>a.maximum</code></td><td><font size="-1" face="Arial, Helvetica">(scrollbar variable maximum value)</font></td></tr>
+<tr valign=top><td><code>b.minimum</code></td><td><font size="-1" face="Arial, Helvetica">(scrollbar variable minimum value)</font></td></tr>
+<tr valign=top><td><code>b.maximum</code></td><td><font size="-1" face="Arial, Helvetica">(scrollbar variable maximum value)</font></td></tr>
+<tr valign=top><td><code>c.minimum</code></td><td><font size="-1" face="Arial, Helvetica">(scrollbar variable minimum value)</font></td></tr>
+<tr valign=top><td><code>c.maximum</code></td><td><font size="-1" face="Arial, Helvetica">(scrollbar variable maximum value)</font></td></tr>
+<tr valign=top><td><code>d.minimum</code></td><td><font size="-1" face="Arial, Helvetica">(scrollbar variable minimum value)</font></td></tr>
+<tr valign=top><td><code>d.maximum</code></td><td><font size="-1" face="Arial, Helvetica">(scrollbar variable maximum value)</font></td></tr>
+</table>
+
+<p><font size="-1" face="Arial, Helvetica"><b>VALUES FOR OPTIONS:</b></font></p>
+<table cellpadding=0>
+<tr valign=top><td><code>true</code></td><td><font size="-1" face="Arial, Helvetica">(for mesh, perspective, box, and vectorarrowhead)</font></td></tr>
+<tr valign=top><td><code>false</code></td><td><font size="-1" face="Arial, Helvetica">(for mesh, perspective, box, and vectorarrowhead)</font></td></tr>
+<tr valign=top><td><code>standard</code></td><td><font size="-1" face="Arial, Helvetica">(for view, x is the most horizontal axis)</font></td></tr>
+<tr valign=top><td><code>textbook</code></td><td><font size="-1" face="Arial, Helvetica">(for view, y is the most horizontal axis)</font></td></tr>
+<tr valign=top><td><code>top</code></td><td><font size="-1" face="Arial, Helvetica">(for view)</font></td></tr>
+<tr valign=top><td><code>front</code></td><td><font size="-1" face="Arial, Helvetica">(for view)</font></td></tr>
+<tr valign=top><td><code>side</code></td><td><font size="-1" face="Arial, Helvetica">(for view)</font></td></tr>
+<tr valign=top><td><code>byheight</code></td><td><font size="-1" face="Arial, Helvetica">(for color or vectorcolor)</font></td></tr>
+<tr valign=top><td><code>bysteepness</code></td><td><font size="-1" face="Arial, Helvetica">(for color or vectorcolor)</font></td></tr>
+<tr valign=top><td><code>black</code></td><td><font size="-1" face="Arial, Helvetica">(for color, vectorcolor, or background)</font></td></tr>
+<tr valign=top><td><code>gray</code></td><td><font size="-1" face="Arial, Helvetica">(for color, vectorcolor, or background)</font></td></tr>
+<tr valign=top><td><code>white</code></td><td><font size="-1" face="Arial, Helvetica">(for color, vectorcolor, or background)</font></td></tr>
+<tr valign=top><td><code>brown</code></td><td><font size="-1" face="Arial, Helvetica">(for color, vectorcolor, or background)</font></td></tr>
+<tr valign=top><td><code>red</code></td><td><font size="-1" face="Arial, Helvetica">(for color, vectorcolor, or background)</font></td></tr>
+<tr valign=top><td><code>yellow</code></td><td><font size="-1" face="Arial, Helvetica">(for color, vectorcolor, or background)</font></td></tr>
+<tr valign=top><td><code>green</code></td><td><font size="-1" face="Arial, Helvetica">(for color, vectorcolor, or background)</font></td></tr>
+<tr valign=top><td><code>cyan</code></td><td><font size="-1" face="Arial, Helvetica">(for color, vectorcolor, or background)</font></td></tr>
+<tr valign=top><td><code>blue</code></td><td><font size="-1" face="Arial, Helvetica">(for color, vectorcolor, or background)</font></td></tr>
+<tr valign=top><td><code>magenta</code></td><td><font size="-1" face="Arial, Helvetica">(for color, vectorcolor, or background)</font></td></tr>
+<tr valign=top><td><code>tail</code></td><td><font size="-1" face="Arial, Helvetica">(for vectoralign)</font></td></tr>
+<tr valign=top><td><code>center</code></td><td><font size="-1" face="Arial, Helvetica">(for vectoralign)</font></td></tr>
+<tr valign=top><td><code>tip</code></td><td><font size="-1" face="Arial, Helvetica">(for vectoralign)</font></td></tr>
+</table>
+
+<p><font size="-1" face="Arial, Helvetica"><b>CONSTANTS:</b></font></p>
+<table cellpadding=0>
+<tr valign=top><td><code>e</code></td><td><font size="-1" face="Arial, Helvetica">(base of natural logarithms)</font></td></tr>
+<tr valign=top><td><code>#e</code></td><td><font size="-1" face="Arial, Helvetica">(base of natural logarithms for Derive users)</font></td></tr>
+<tr valign=top><td><code>pi</code></td><td><font size="-1" face="Arial, Helvetica">(pi)</font></td></tr>
+</table>
+
+<p><font size="-1" face="Arial, Helvetica"><b>VARIABLES:</b></font></p>
+<table cellpadding=0>
+<tr valign=top><td><code>x</code></td><td><font size="-1" face="Arial, Helvetica">(x variable for implicit graphing)</font></td></tr>
+<tr valign=top><td><code>y</code></td><td><font size="-1" face="Arial, Helvetica">(y variable for implicit graphing)</font></td></tr>
+<tr valign=top><td><code>z</code></td><td><font size="-1" face="Arial, Helvetica">(z variable for implicit graphing)</font></td></tr>
+<tr valign=top><td><code>r</code></td><td><font size="-1" face="Arial, Helvetica">(polar radius, r=sqrt(x^2+y^2))</font></td></tr>
+<tr valign=top><td><code>theta</code></td><td><font size="-1" face="Arial, Helvetica">(polar angle, 0&lt;=theta&lt;2*pi, theta=angle(-x,-y)+pi)</font></td></tr>
+<tr valign=top><td><code>rho</code></td><td><font size="-1" face="Arial, Helvetica">(spherical radius, rho=sqrt(x^2+y^2+z^2))</font></td></tr>
+<tr valign=top><td><code>phi</code></td><td><font size="-1" face="Arial, Helvetica">(spherical angle, 0&lt;=phi&lt;=pi, phi=angle(z,r))</font></td></tr>
+<tr valign=top><td><code>u</code></td><td><font size="-1" face="Arial, Helvetica">(u variable for parametric graphs)</font></td></tr>
+<tr valign=top><td><code>v</code></td><td><font size="-1" face="Arial, Helvetica">(v variable for parametric graphs)</font></td></tr>
+<tr valign=top><td><code>a</code></td><td><font size="-1" face="Arial, Helvetica">(a variable for scrollbar)</font></td></tr>
+<tr valign=top><td><code>b</code></td><td><font size="-1" face="Arial, Helvetica">(b variable for scrollbar)</font></td></tr>
+<tr valign=top><td><code>c</code></td><td><font size="-1" face="Arial, Helvetica">(c variable for scrollbar)</font></td></tr>
+<tr valign=top><td><code>d</code></td><td><font size="-1" face="Arial, Helvetica">(d variable for scrollbar)</font></td></tr>
+<tr valign=top><td><code>time</code></td><td><font size="-1" face="Arial, Helvetica">(current time for graphs that change with time)</font></td></tr>
+</table>
+
+<p><font size="-1" face="Arial, Helvetica"><b>SYMBOLS:</b></font></p>
+<table cellpadding=0>
+<tr valign=top><td><code>=</code></td><td><font size="-1" face="Arial, Helvetica">(equals, for entering equations)</font></td></tr>
+<tr valign=top><td><code>&lt;</code></td><td><font size="-1" face="Arial, Helvetica">(less than, for entering inequalities)</font></td></tr>
+<tr valign=top><td><code>&gt;</code></td><td><font size="-1" face="Arial, Helvetica">(greater than, for entering inequalities)</font></td></tr>
+<tr valign=top><td><code>&lt;=</code></td><td><font size="-1" face="Arial, Helvetica">(less than or equal, for entering inequalities)</font></td></tr>
+<tr valign=top><td><code>&gt;=</code></td><td><font size="-1" face="Arial, Helvetica">(greater than or equal, for entering inequalities)</font></td></tr>
+<tr valign=top><td><code>&amp;</code></td><td><font size="-1" face="Arial, Helvetica">(intersection)</font></td></tr>
+<tr valign=top><td><code>:=</code></td><td><font size="-1" face="Arial, Helvetica">(assignment, for assigning values)</font></td></tr>
+<tr valign=top><td><code>(...)</code></td><td><font size="-1" face="Arial, Helvetica">(lists of arguments or equations)</font></td></tr>
+<tr valign=top><td><code>+</code></td><td><font size="-1" face="Arial, Helvetica">(addition or leading plus sign)</font></td></tr>
+<tr valign=top><td><code>-</code></td><td><font size="-1" face="Arial, Helvetica">(subtraction or leading minus sign)</font></td></tr>
+<tr valign=top><td><code>*</code></td><td><font size="-1" face="Arial, Helvetica">(multiplication)</font></td></tr>
+<tr valign=top><td><code>/</code></td><td><font size="-1" face="Arial, Helvetica">(division)</font></td></tr>
+<tr valign=top><td><code>^</code></td><td><font size="-1" face="Arial, Helvetica">(powers)</font></td></tr>
+<tr valign=top><td><code>|...|</code></td><td><font size="-1" face="Arial, Helvetica">(absolute value, same as abs(...))</font></td></tr>
+<tr valign=top><td><code>!</code></td><td><font size="-1" face="Arial, Helvetica">(factorial)</font></td></tr>
+</table>
+
+<p><font size="-1" face="Arial, Helvetica"><b>ONE ARGUMENT FUNCTIONS:</b></font></p>
+<table cellpadding=0>
+<tr valign=top><td><code>abs</code></td><td><font size="-1" face="Arial, Helvetica">(absolute value, same as |...|)</font></td></tr>
+<tr valign=top><td><code>acos</code></td><td><font size="-1" face="Arial, Helvetica">(arccosine)</font></td></tr>
+<tr valign=top><td><code>acosh</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic arccosine)</font></td></tr>
+<tr valign=top><td><code>acot</code></td><td><font size="-1" face="Arial, Helvetica">(arccotangent)</font></td></tr>
+<tr valign=top><td><code>acoth</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic arccotangent)</font></td></tr>
+<tr valign=top><td><code>acsc</code></td><td><font size="-1" face="Arial, Helvetica">(arccosecant)</font></td></tr>
+<tr valign=top><td><code>acsch</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic arccosecant)</font></td></tr>
+<tr valign=top><td><code>asec</code></td><td><font size="-1" face="Arial, Helvetica">(arcsecant)</font></td></tr>
+<tr valign=top><td><code>asech</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic arcsecant)</font></td></tr>
+<tr valign=top><td><code>asin</code></td><td><font size="-1" face="Arial, Helvetica">(arcsine)</font></td></tr>
+<tr valign=top><td><code>asinh</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic arcsine)</font></td></tr>
+<tr valign=top><td><code>atan</code></td><td><font size="-1" face="Arial, Helvetica">(arctangent)</font></td></tr>
+<tr valign=top><td><code>atanh</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic arctangent)</font></td></tr>
+<tr valign=top><td><code>ceiling</code></td><td><font size="-1" face="Arial, Helvetica">(smallest integer >= argument)</font></td></tr>
+<tr valign=top><td><code>cos</code></td><td><font size="-1" face="Arial, Helvetica">(cosine)</font></td></tr>
+<tr valign=top><td><code>cosh</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic cosine)</font></td></tr>
+<tr valign=top><td><code>cot</code></td><td><font size="-1" face="Arial, Helvetica">(cotangent)</font></td></tr>
+<tr valign=top><td><code>coth</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic cotangent)</font></td></tr>
+<tr valign=top><td><code>csc</code></td><td><font size="-1" face="Arial, Helvetica">(cosecant)</font></td></tr>
+<tr valign=top><td><code>csch</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic cosecant)</font></td></tr>
+<tr valign=top><td><code>floor</code></td><td><font size="-1" face="Arial, Helvetica">(greatest integer <= argument)</font></td></tr>
+<tr valign=top><td><code>gamma</code></td><td><font size="-1" face="Arial, Helvetica">(gamma function)</font></td></tr>
+<tr valign=top><td><code>ln</code></td><td><font size="-1" face="Arial, Helvetica">(log base e)</font></td></tr>
+<tr valign=top><td><code>log</code></td><td><font size="-1" face="Arial, Helvetica">(log base 10)</font></td></tr>
+<tr valign=top><td><code>nonneg</code></td><td><font size="-1" face="Arial, Helvetica">(1 if x&gt;=0, else undefined)</font></td></tr>
+<tr valign=top><td><code>one</code></td><td><font size="-1" face="Arial, Helvetica">(1 if 0&lt;=x&lt;=1, else undefined)</font></td></tr>
+<tr valign=top><td><code>sec</code></td><td><font size="-1" face="Arial, Helvetica">(secant)</font></td></tr>
+<tr valign=top><td><code>sech</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic secant)</font></td></tr>
+<tr valign=top><td><code>sign</code></td><td><font size="-1" face="Arial, Helvetica">(-1 if negative, 1 if positive, indefinite if 0 or indefinite)</font></td></tr>
+<tr valign=top><td><code>sin</code></td><td><font size="-1" face="Arial, Helvetica">(sine)</font></td></tr>
+<tr valign=top><td><code>sinh</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic sine)</font></td></tr>
+<tr valign=top><td><code>sqr</code></td><td><font size="-1" face="Arial, Helvetica">(square)</font></td></tr>
+<tr valign=top><td><code>sqrt</code></td><td><font size="-1" face="Arial, Helvetica">(square root)</font></td></tr>
+<tr valign=top><td><code>tan</code></td><td><font size="-1" face="Arial, Helvetica">(tangent)</font></td></tr>
+<tr valign=top><td><code>tanh</code></td><td><font size="-1" face="Arial, Helvetica">(hyperbolic tangent)</font></td></tr>
+</table>
+
+<p><font size="-1" face="Arial, Helvetica"><b>TWO ARGUMENT FUNCTIONS:</b></font></p>
+<table cellpadding=0>
+<tr valign=top><td><code>angle</code></td><td><font size="-1" face="Arial, Helvetica">(-pi &lt;= angle of (x,y) from positive x axis &lt;= pi)</font></td></tr>
+<tr valign=top><td><code>beta</code></td><td><font size="-1" face="Arial, Helvetica">(beta function)</font></td></tr>
+<tr valign=top><td><code>max</code></td><td><font size="-1" face="Arial, Helvetica">(maximum value)</font></td></tr>
+<tr valign=top><td><code>min</code></td><td><font size="-1" face="Arial, Helvetica">(minimum value)</font></td></tr>
+</table>
+
+<p><font size="-1" face="Arial, Helvetica"><b>THREE ARGUMENT FUNCTIONS:</b></font></p>
+<table cellpadding=0>
+<tr valign=top><td><code>cylindrical</code></td><td><font size="-1" face="Arial, Helvetica">(parametric graph in cylindrical coordinates)</font></td></tr>
+<tr valign=top><td><code>near</code></td><td><font size="-1" face="Arial, Helvetica">(1 if (x,y,z) is near current grid, else undefined)</font></td></tr>
+<tr valign=top><td><code>rectangular</code></td><td><font size="-1" face="Arial, Helvetica">(parametric graph in rectangular coordinates)</font></td></tr>
+<tr valign=top><td><code>spherical</code></td><td><font size="-1" face="Arial, Helvetica">(parametric graph in spherical coordinates)</font></td></tr>
+<tr valign=top><td><code>vector</code></td><td><font size="-1" face="Arial, Helvetica">(graphs a vector field)</font></td></tr>
+</table>
+
+<p><font size="-1" face="Arial, Helvetica"><b>KNOWN PROBLEMS:</b></font></p>
+
+<ol>
+
+<li><font size="-1" face="Arial, Helvetica">Microsoft WordPad under Windows NT 4.0 makes embedded graphs, or graphs
+copied from the clipboard, too large.  It also truncates the graphs on the right
+hand side.</font></li>
+
+<li><font size="-1" face="Arial, Helvetica">Microsoft Paint in 256 color mode decreases the number of colors in the
+graphs to 16.</font></li>
+
+</ol>
+
+<p align=center><font size="-1" face="Arial, Helvetica">&nbsp;<br>Copyright &copy; 1997-2018 by DPGraph.  All rights reserved.</font></p>
+
+</body>
+
+<!-- Mirrored from www.dpgraph.com/implicit-equations.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 May 2018 23:38:18 GMT -->
+</html>

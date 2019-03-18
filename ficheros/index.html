@@ -1,0 +1,291 @@
+<html>
+    <head>
+        <title>Ejemplo</title>
+        <script type="text/javascript" src="processing.js"></script>
+    </head>
+    <body>
+        <img src="apple.png" alt="No se puede cargar">
+        <img src="chrome.jpeg" alt="No se puede cargar">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <form action="index.html" method="post">
+        <input type="text" name="txtNombre"/>
+        <input type="text" name="txtApell"/>
+        <input type="submit" name="enviar" text="Enviar"/>
+        </form>
+        <canvas data-processing-sources="PurpleRain.pde"></canvas>
+        <canvas data-processing-sources="SandPiles.pde"></canvas>
+        <canvas data-processing-sources="BallsGenerator.pde"></canvas>
+        
+        
+        
+        <pre>
+        <span style="color: #33997E;">package</span> practicafinalmtpa;
+        <span style="color: #33997E;">import</span> java.io.<span style="color: #E2661A;">BufferedReader</span>;
+        <span style="color: #33997E;">import</span> java.io.BufferedWriter;
+        <span style="color: #33997E;">import</span> java.io.ByteArrayOutputStream;
+        <span style="color: #33997E;">import</span> java.io.File;
+        <span style="color: #33997E;">import</span> java.io.FileNotFoundException;
+        <span style="color: #33997E;">import</span> java.io.FileReader;
+        <span style="color: #33997E;">import</span> java.io.FileWriter;
+        <span style="color: #33997E;">import</span> java.io.IOException;
+        <span style="color: #33997E;">import</span> java.io.InputStream;
+        <span style="color: #33997E;">import</span> java.io.OutputStream;
+        <span style="color: #33997E;">import</span> java.net.Socket;
+        <span style="color: #33997E;">import</span> java.nio.file.Files;
+        <span style="color: #33997E;">import</span> java.nio.file.LinkOption;
+        <span style="color: #33997E;">import</span> java.nio.file.Path;
+        <span style="color: #33997E;">import</span> java.nio.file.Paths;
+        <span style="color: #33997E;">import</span> java.nio.file.StandardOpenOption;
+        <span style="color: #33997E;">import</span> <span style="color: #33997E;">static</span> java.nio.file.StandardOpenOption.*;
+        <span style="color: #33997E;">import</span> java.util.<span style="color: #E2661A;">ArrayList</span>;
+        <span style="color: #33997E;">import</span> java.util.stream.Stream;
+
+        <span style="color: #33997E;">public</span> <span style="color: #33997E;">class</span> AdministradorPeticion <span style="color: #33997E;">implements</span> Runnable, HTTPProcesamiento, Constants{
+
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> LogPeticionUsuario log;
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> <span style="color: #33997E;">static</span> <span style="color: #E2661A;">String</span> currentAlias = <span style="color: #7D4793;">&quot;&quot;</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> Socket cliente;
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> InputStream is;
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> OutputStream os;
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> WebAppConfig wConfig;
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> <span style="color: #E2661A;">ArrayList</span>&lt;WebAppConfig&gt; appConfs;
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> <span style="color: #33997E;">static</span> WebAppConfig currentConfig;
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> AdministradorPeticion(Socket cliente, <span style="color: #E2661A;">ArrayList</span>&lt;WebAppConfig&gt; configs) {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">try</span> {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">this</span>.cliente = cliente;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os&nbsp;=&nbsp;<span style="color: #33997E;">this</span>.cliente.getOutputStream();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;=&nbsp;<span style="color: #33997E;">this</span>.cliente.getInputStream();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">this</span>.appConfs = configs;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #669900;">catch</span> (Exception ex) {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.<span style="color: #006699;">println</span>(<span style="color: #7D4793;">&quot;Error: &quot;</span>+ex.getMessage());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+
+        &nbsp;&nbsp;&nbsp;&nbsp;@Override
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> <span style="color: #33997E;">void</span> run() {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">try</span> {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ByteArrayOutputStream&nbsp;mensaje&nbsp;=&nbsp;leerPeticion();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>( ! (mensaje.<span style="color: #006699;">size</span>()==0)){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PeticionHTTP&nbsp;pet&nbsp;=&nbsp;<span style="color: #33997E;">new</span> PeticionHTTP(mensaje);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">synchronized</span>(<span style="color: #33997E;">this</span>){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(currentConfig == <span style="color: #33997E;">null</span>)
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currentConfig&nbsp;=&nbsp;<span style="color: #33997E;">new</span> WebAppConfig();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(!(wConfig = selectCurrentConf(pet)).getAlias().<span style="color: #006699;">equals</span>(<span style="color: #7D4793;">&quot;&quot;</span>)) 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currentConfig&nbsp;=&nbsp;wConfig;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;procesarPeticion(pet);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cliente.<span style="color: #006699;">close</span>();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #669900;">catch</span> (Exception ex) {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #666666;">//System.out.println(&quot;Error: &quot;+ex.getMessage());</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex.printStackTrace();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+
+        &nbsp;&nbsp;&nbsp;&nbsp;@Override
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> ByteArrayOutputStream leerPeticion() <span style="color: #33997E;">throws</span> Exception {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">int</span> size = 64000;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">byte</span>[] buffer = <span style="color: #33997E;">new</span> <span style="color: #E2661A;">byte</span>[size];
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">int</span> nb = -1;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ByteArrayOutputStream&nbsp;baos&nbsp;=&nbsp;<span style="color: #33997E;">new</span> ByteArrayOutputStream();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">do</span>{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nb&nbsp;=&nbsp;is.read(buffer,&nbsp;0,&nbsp;size);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(nb&gt;0)
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baos.write(buffer,&nbsp;0,&nbsp;nb);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span style="color: #669900;">while</span>(nb==size);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> baos;
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+
+        &nbsp;&nbsp;&nbsp;&nbsp;@Override
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> <span style="color: #33997E;">void</span> procesarPeticion(PeticionHTTP pet) <span style="color: #33997E;">throws</span> IOException{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">switch</span> (pet.verbo) {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">case</span> <span style="color: #7D4793;">&quot;GET&quot;</span>:
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;procesarGet(pet);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">break</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">case</span> <span style="color: #7D4793;">&quot;DELETE&quot;</span>:
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;procesarDelete(pet);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">break</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">case</span> <span style="color: #7D4793;">&quot;PUT&quot;</span>:
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;procesarPut(pet);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">break</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">case</span> <span style="color: #7D4793;">&quot;POST&quot;</span>:
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;procesarPost(pet);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">break</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">default</span>:
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(<span style="color: #33997E;">new</span> RespuestaHTTP(501).getData());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.<span style="color: #006699;">println</span>(<span style="color: #7D4793;">&quot;Verbo no implementado&quot;</span>);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">break</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+
+        &nbsp;&nbsp;&nbsp;&nbsp;@Override
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> <span style="color: #33997E;">void</span> procesarGet(PeticionHTTP pet) <span style="color: #33997E;">throws</span> IOException {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;ruta&nbsp;=&nbsp;<span style="color: #33997E;">null</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>( pet.url.<span style="color: #006699;">equals</span>(<span style="color: #7D4793;">&quot;/&quot;</span>) ){            
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ruta&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(FILES_PATH+INDEX_PATH);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log&nbsp;=&nbsp;<span style="color: #33997E;">new</span> LogPeticionUsuario(cliente.getInetAddress().getHostName(), pet.url);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(currentConfig.getAlias().<span style="color: #006699;">equals</span>(<span style="color: #7D4793;">&quot;&quot;</span>)){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ruta&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(FILES_PATH+pet.url);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>( Files.isDirectory(Paths.<span style="color: #006699;">get</span>(FILES_PATH+pet.url)) ){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currentAlias&nbsp;=&nbsp;pet.url;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log&nbsp;=&nbsp;<span style="color: #33997E;">new</span> LogPeticionUsuario(cliente.getInetAddress().getHostName(), currentAlias);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(currentConfig.getIndex().<span style="color: #006699;">equals</span>(<span style="color: #7D4793;">&quot;&quot;</span>) &amp;&amp; currentConfig.getDirStruct()==<span style="color: #33997E;">true</span>){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ruta&nbsp;=&nbsp;arbolDirectorios(currentConfig.getAlias());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span style="color: #669900;">else</span>{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ruta&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(FILES_PATH+currentConfig.getAlias()+<span style="color: #7D4793;">&quot;\\&quot;</span>+currentConfig.getIndex());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span>{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ruta&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(FILES_PATH+currentConfig.getAlias()+<span style="color: #7D4793;">&quot;\\&quot;</span>+pet.url);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">byte</span>[] datosFichero = leerFichero(ruta);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(datosFichero.<span style="color: #33997E;">length</span> &gt; 0){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RespuestaHTTP&nbsp;resp&nbsp;=&nbsp;<span style="color: #33997E;">new</span> RespuestaHTTP(200, ruta.<span style="color: #006699;">toString</span>(), datosFichero, currentConfig);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(resp.getData());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span style="color: #669900;">else</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(<span style="color: #33997E;">new</span> RespuestaHTTP(404, currentConfig).getData());
+
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> <span style="color: #E2661A;">byte</span>[] leerFichero(Path ruta) <span style="color: #33997E;">throws</span> IOException{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ByteArrayOutputStream&nbsp;baos&nbsp;=&nbsp;<span style="color: #33997E;">new</span> ByteArrayOutputStream();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>( Files.isRegularFile(ruta, LinkOption.NOFOLLOW_LINKS) )
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baos.write(Files.readAllBytes(ruta),&nbsp;0,&nbsp;(<span style="color: #E2661A;">int</span>)Files.<span style="color: #006699;">size</span>(ruta));
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(<span style="color: #33997E;">new</span> RespuestaHTTP(404).getData());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> baos.toByteArray();
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+
+        &nbsp;&nbsp;&nbsp;&nbsp;@Override
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> <span style="color: #33997E;">void</span> procesarDelete(PeticionHTTP pet)<span style="color: #33997E;">throws</span> IOException{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(borrarFichero(pet))
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(<span style="color: #33997E;">new</span> RespuestaHTTP(202).getData());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(<span style="color: #33997E;">new</span> RespuestaHTTP(404).getData());
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> <span style="color: #E2661A;">boolean</span> borrarFichero(PeticionHTTP pet) <span style="color: #33997E;">throws</span> IOException{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;ruta&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(FILES_PATH+pet.url);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;rutaPapelera&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(RECYCLE_BIN_PATH+pet.url);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>( ! Files.isDirectory(Paths.<span style="color: #006699;">get</span>(RECYCLE_BIN_PATH), LinkOption.NOFOLLOW_LINKS))
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.createDirectory(Paths.<span style="color: #006699;">get</span>(RECYCLE_BIN_PATH));
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>( Files.isRegularFile(ruta, LinkOption.NOFOLLOW_LINKS) &amp;&amp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!&nbsp;Files.isRegularFile(rutaPapelera,&nbsp;LinkOption.NOFOLLOW_LINKS)){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.move(ruta,&nbsp;rutaPapelera);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> <span style="color: #33997E;">true</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span style="color: #669900;">else</span>{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.<span style="color: #006699;">println</span>(ruta.<span style="color: #006699;">toString</span>()+<span style="color: #7D4793;">&quot; no es un fichero o no se pudo borrar&quot;</span>);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> <span style="color: #33997E;">false</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;@Override
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> <span style="color: #33997E;">void</span> procesarPut(PeticionHTTP pet) <span style="color: #33997E;">throws</span> IOException{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;rutaPUT&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(FILES_PATH+pet.url);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(Files.notExists(rutaPUT, LinkOption.NOFOLLOW_LINKS)){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(crearFicheroPUT(pet))
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(<span style="color: #33997E;">new</span> RespuestaHTTP(201).getData());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">String</span> err = <span style="color: #7D4793;">&quot;File cant be created at origin&quot;</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(<span style="color: #33997E;">new</span> RespuestaHTTP(400, <span style="color: #33997E;">null</span>, err.getBytes(<span style="color: #7D4793;">&quot;UTF-8&quot;</span>)).getData());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span style="color: #669900;">else</span>{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(crearFicheroPUT(pet))
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(<span style="color: #33997E;">new</span> RespuestaHTTP(200).getData());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> {
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(<span style="color: #33997E;">new</span> RespuestaHTTP(501).getData());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> <span style="color: #E2661A;">boolean</span> crearFicheroPUT(PeticionHTTP pet){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;rutaPUT&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(FILES_PATH+pet.url);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">try</span>{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.deleteIfExists(rutaPUT);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.createFile(rutaPUT);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.write(rutaPUT,&nbsp;pet.body,&nbsp;CREATE);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> <span style="color: #33997E;">true</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span style="color: #669900;">catch</span>(IOException e){<span style="color: #33997E;">return</span> <span style="color: #33997E;">false</span>;}
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+
+        &nbsp;&nbsp;&nbsp;&nbsp;@Override
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> <span style="color: #33997E;">void</span> procesarPost(PeticionHTTP pet) <span style="color: #33997E;">throws</span> IOException{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">String</span> cuerpo = <span style="color: #33997E;">new</span> String(pet.body, <span style="color: #7D4793;">&quot;UTF-8&quot;</span>);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">ArrayList</span>&lt;<span style="color: #E2661A;">String</span>&gt; nombresVariables = <span style="color: #33997E;">new</span> <span style="color: #E2661A;">ArrayList</span>&lt;&gt;();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">ArrayList</span>&lt;<span style="color: #E2661A;">String</span>&gt; variables = <span style="color: #33997E;">new</span> <span style="color: #E2661A;">ArrayList</span>&lt;&gt;();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">String</span>[] form = cuerpo.<span style="color: #006699;">split</span>(<span style="color: #7D4793;">&quot;&amp;&quot;</span>);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">for</span>(<span style="color: #E2661A;">int</span> i=0;i&lt;form.<span style="color: #33997E;">length</span>-1;i++){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nombresVariables.<span style="color: #006699;">add</span>(form[i].<span style="color: #006699;">split</span>(<span style="color: #7D4793;">&quot;=&quot;</span>)[0]);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variables.<span style="color: #006699;">add</span>(form[i].<span style="color: #006699;">split</span>(<span style="color: #7D4793;">&quot;=&quot;</span>)[1]);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;escribirFormFichero(nombresVariables,&nbsp;variables);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(<span style="color: #33997E;">new</span> RespuestaHTTP(301, pet).getData());
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">public</span> <span style="color: #33997E;">void</span> escribirFormFichero(<span style="color: #E2661A;">ArrayList</span>&lt;<span style="color: #E2661A;">String</span>&gt; nombresVariables, <span style="color: #E2661A;">ArrayList</span>&lt;<span style="color: #E2661A;">String</span>&gt; variables) <span style="color: #33997E;">throws</span> IOException{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;rutaForm&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(BD_PATH+<span style="color: #7D4793;">&quot;form.dat&quot;</span>);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;rutaBd&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(BD_PATH);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>( ! Files.isDirectory(rutaBd, LinkOption.NOFOLLOW_LINKS))
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.createDirectory(rutaBd);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>( ! Files.isRegularFile(rutaForm, LinkOption.NOFOLLOW_LINKS))
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.createFile(rutaForm);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">for</span>(<span style="color: #E2661A;">int</span> i=0; i&lt;nombresVariables.<span style="color: #006699;">size</span>(); i++){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">String</span> linea = nombresVariables.<span style="color: #006699;">get</span>(i)+<span style="color: #7D4793;">&quot;:&quot;</span>+variables.<span style="color: #006699;">get</span>(i)+<span style="color: #7D4793;">&quot;\n&quot;</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.write(rutaForm,&nbsp;linea.getBytes(<span style="color: #7D4793;">&quot;UTF-8&quot;</span>), StandardOpenOption.APPEND);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> WebAppConfig selectCurrentConf(PeticionHTTP pet){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(pet.url.<span style="color: #006699;">equals</span>(<span style="color: #7D4793;">&quot;/&quot;</span>)){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> <span style="color: #33997E;">new</span> WebAppConfig();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">String</span> candidate = pet.url.<span style="color: #006699;">split</span>(<span style="color: #7D4793;">&quot;/&quot;</span>)[1];
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(Files.isDirectory(Paths.<span style="color: #006699;">get</span>(FILES_PATH+candidate))){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">for</span>(WebAppConfig wA : appConfs){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(wA.getAlias().<span style="color: #006699;">equals</span>(candidate)){                   
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> wA;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> <span style="color: #33997E;">new</span> WebAppConfig();
+        &nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">private</span> Path arbolDirectorios(<span style="color: #E2661A;">String</span> alias){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">String</span> fileRoute = FILES_PATH+alias+<span style="color: #7D4793;">&quot;\\&quot;</span>+<span style="color: #7D4793;">&quot;\\.&quot;</span>+<span style="color: #7D4793;">&quot;index&quot;</span>+alias+<span style="color: #7D4793;">&quot;.html&quot;</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">StringBuilder</span> sb = <span style="color: #33997E;">new</span> StringBuilder();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(Files.isRegularFile(Paths.<span style="color: #006699;">get</span>(fileRoute), LinkOption.NOFOLLOW_LINKS)){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;filePath&nbsp;=&nbsp;Paths.<span style="color: #006699;">get</span>(fileRoute);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> filePath;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">try</span>{
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stream&lt;Path&gt;&nbsp;paths&nbsp;=&nbsp;Files.walk(Paths.<span style="color: #006699;">get</span>(FILES_PATH+alias), 1);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;flPth&nbsp;=&nbsp;Files.createFile(Paths.<span style="color: #006699;">get</span>(fileRoute));
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;file&nbsp;=&nbsp;flPth.toFile();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedWriter&nbsp;bw&nbsp;=&nbsp;<span style="color: #33997E;">new</span> BufferedWriter(<span style="color: #33997E;">new</span> FileWriter(file, <span style="color: #33997E;">true</span>));
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">for</span>(Object o : paths.toArray()){
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">String</span> rawResource = o.<span style="color: #006699;">toString</span>();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">String</span> trimmedRes = rawResource.replace(<span style="color: #7D4793;">&quot;.\\ficheros\\&quot;</span>+alias, <span style="color: #7D4793;">&quot;&quot;</span>);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">String</span> trimmedResv2 = rawResource.replace(<span style="color: #7D4793;">&quot;.\\ficheros\\&quot;</span>+alias+<span style="color: #7D4793;">&quot;\\&quot;</span>, <span style="color: #7D4793;">&quot;&quot;</span>);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sb.<span style="color: #006699;">append</span>(<span style="color: #7D4793;">&quot;&lt;p&gt;&quot;</span>).<span style="color: #006699;">append</span>(<span style="color: #7D4793;">&quot;&lt;a href=&quot;</span>).<span style="color: #006699;">append</span>(trimmedRes).<span style="color: #006699;">append</span>(<span style="color: #7D4793;">&quot;&gt;&quot;</span>).<span style="color: #006699;">append</span>(trimmedResv2)
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<span style="color: #006699;">append</span>(<span style="color: #7D4793;">&quot;&lt;/a&gt;&quot;</span>).<span style="color: #006699;">append</span>(<span style="color: #7D4793;">&quot;&lt;/p&gt;&quot;</span>).<span style="color: #006699;">append</span>(System.getProperty(<span style="color: #7D4793;">&quot;line.separator&quot;</span>));                
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bw.write(sb.<span style="color: #006699;">toString</span>());
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bw.<span style="color: #006699;">close</span>();
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sb.setLength(0);
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> flPth;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span style="color: #669900;">catch</span>(IOException ex){System.out.<span style="color: #006699;">println</span>(ex.getMessage());}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #33997E;">return</span> <span style="color: #33997E;">null</span>;
+        &nbsp;&nbsp;&nbsp;&nbsp;}
+        }
+        </pre>
+    </body>
+</html>
+

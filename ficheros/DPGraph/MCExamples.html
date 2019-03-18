@@ -1,0 +1,452 @@
+<html>
+
+
+<!-- Mirrored from www.dpgraph.com/MCExamples.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 May 2018 23:38:28 GMT -->
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Multivariable Calculus Examples</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<p><img src="conesphere.jpg" align="right" border="1" hspace="0"
+width="332" height="285"> </p>
+
+<h3 align="left">Examples from Multivariable Calculus</h3>
+
+<p align="left"><b><i>About this page.</i></b> <i>Here we discuss
+several examples that involve DPGraph extensively, and in some
+cases, also indispensably. </i><em>The examples below are divided
+into two groups: The first group discusses optimization of
+functions of 2 or 3 variables over compact regions and manifolds;
+the second group shows how to set up double and triple integrals
+using DPGraph.</em><i> Although these examples and methods do not
+replace analytical techniques, for 2 or 3 variables they work
+well beyond the reach of standard (differentiable) analysis.</i> </p>
+
+<p align="left"><i>If you do not currently have a copy of
+DPGraph installed on your machine, then it is strongly
+recommended that you first download and install the free DPGraph </i><a
+href="viewer.html"><i>Viewer</i></a><i>.
+This will enable you to use the scrollbar, and to see the graphics,
+animations and the
+commands that create them when you click on the icon:</i></p>
+
+<p align="center"><img src="scrsavr.gif" width="29" height="32"></p>
+
+<p align="left"><i>wherever it appears below. To be
+able to modify the examples below, it is necessary to
+obtain the full version of DPGraph and install it on your machine. Just
+click </i><a href="purchase.html"><i>here</i></a><i>
+and follow the easy directions. </i><em>Please email any
+questions/comments/criticisms</em><i> to Hassan </i><a
+href="mailto:hsedagha@vcu.edu"><i>Sedaghat</i></a><i>.</i></p>
+
+<hr width="70%">
+
+<h3 align="center">Part 1: Maxima and Minima, A Graphical
+Exploration</h3>
+
+<p><b>Continuous functions on bounded regions.</b> Let <em>f</em>
+be a continuous function on a closed, bounded region (or a
+compact region). Then by the Extreme Value Theorem, we know that <em>f</em>
+is bounded and attains its maximum and minimum values at points
+within the compact region. If <em>f(x,y)</em> is a function of
+two variables, then we may either graph it as a surface in space
+and estimate the max and min values from the graph, or
+alternately, we can draw several level curves (or <em>z</em>-slices)
+of <em>f(x,y)</em> in the plane until all maxima and minima are
+identified. For a function <em>f(x,y,z)</em> of three variables,
+only the 3D analog of the second method (i.e., using level
+surfaces) is available as a graphical estimation technique. For
+the technically minded, in all the examples on this page we
+assume that <em>f </em>and the compact region on which it is
+continuous are &quot;nice&quot; enough for the computer to handel
+(<em>f</em> is piecewise smooth, the region is connected with few
+or no holes, its boundary curve or surface is &quot;simple&quot;,
+etc.)<br>
+<br>
+Let's start with a 2 variable example so as to illustrate the way
+the method works. </p>
+
+<hr size="1" width="50%">
+
+<p align="left"><b>Example 1: Level curves and extrema.</b></p>
+
+<p align="left"><img src="mxmn2deq.jpg" width="489" height="132"></p>
+
+<p align="left"><i>Solution.</i> First, graph <em>f(x,y)</em> as
+a surface using DPGraph. Then scroll z-slices up or down in the
+DPGraph's scrollbar menu. The graph below shows a few snapshots
+of this scrolling process: <img src="maxminhunt2d.jpg"
+width="627" height="420"> </p>
+
+<p align="left">It is clear from the above that we can get good
+estimates of maxima and minima. If we scroll down, then we first
+encounter the two points at the top where the maximum value of <em>f</em>
+occurs within the closed square region of this problem. The value
+at the bottom of the DPGraph screen (namely, 2.93) gives the
+estimate for the maximum of <em>f</em>. As we continue scrolling
+down, we see an additional local maximum point. Continuing, we
+observe the two closed loops (see the level <em>z</em> = -0.13)
+shrink into two points and then disappear. Clearly, the bottom
+two points are the minima, with <em>f</em> approximately equal to
+-0.94 (to see a graph of <em>f(x,y)</em> as a surface, click <a
+href="surface1.html">here</a>).</p>
+
+<hr size="1" width="50%">
+
+<p align="left"><b>Example 2: Level surfaces and extrema, 3
+variables.</b> <img src="maxmineq.jpg" width="501" height="120"> </p>
+
+<p align="left"><i>Solution.</i> We apply the method of Example
+1. Instead of <em>z</em>-slices, however, we set <em>f(x,y,z) = a</em>,
+where <em>a</em> is a parameter whose values give the level
+surfaces of f. DPGraph's scrollbar lets us change <em>a</em>, and
+for each value of <em>a</em>, DPGraph immediately draws the
+corresponding level surface. Thus by scrolling down, first local
+maxima will pop in one by one, and then the local minima can be
+identified as they pop out, analogously to Example 1. Notice that
+maxima/minima on the individual level surfaces themselves are not
+relevant here; only the values of <em>a</em> at which some shape
+pops in or out are significant. To see some snapshots of the
+process, click <a
+href="maxminhuntsnaps.html">here</a>.</p>
+
+<p align="left"><a href="mcex2.dpg"><img src="scrsavr.gif"
+align="middle" border="0" width="29" height="32"></a> <em>Click
+the icon for an interactive session.</em></p>
+
+<hr width="60%">
+
+<p><b>Visualizing Constrained Optimization.</b> </p>
+
+<p align="left">According to the Lagrange Multiplier Method, a
+function <em>f(x,y)</em> has a maximum or a minimum subject to a
+constraint equation <em>g(x,y)</em> = 0 if the graph of <em>g</em>
+is tangent at one or more points to a level curve of <em>f</em>,
+under suitable differentiability assumptions. At these tangency
+points, the gradients of <em>f</em> and <em>g</em> are scalar
+multiples of each other and the coordinates of tangency points
+can be determined by solving a system of 3 (usually nonlinear)
+equations. This same notion extends to any number of variables;
+for three variables, we find the points of tangency of the
+surface <em>g(x,y,z)</em> = 0 to the level surfaces of <em>f(x,y,z)</em>
+by solving a system of 4 equations.</p>
+
+<hr size="1" width="50%">
+
+<p align="left"><b>Example 3: Finding max/min subject to a
+constraint, 2 variables.</b></p>
+
+<p align="left"><img src="2dlgrng1.jpg" width="477" height="96"> </p>
+
+<p align="left"><i>Solution.</i> We draw the constraint cirlce in
+DPGraph, and add in the equation <em>f(x,y) = a</em>. Using
+scrollbar, we change the value of <em>a</em>, and observe the
+corresponding level curve in relation to the circle. At points
+where the level curve of <em>f</em> touches the circle, we have
+the critical points (estimates to the solutions of the system of
+equations in the Lagrange multiplier method). The values of <em>f</em>
+read off from the bottom of the DPGraph screen then give us the
+estimates to the max and the min of <em>f</em> on the circle.
+Note that not all the points of tangency between the level cruve
+and the circle correspond to maxima or minima, but they do
+correspond to the critical points of the Lagrange mutlipliers
+system of equations, since the gradient vectors are parallel at
+all tangency points. To see snapshots of the scrollbar process,
+click <a
+href="2dlagrangesnaps.html">here</a>.</p>
+
+<p align="left"><a href="mcex3.dpg"><img src="scrsavr.gif"
+align="middle" border="0" width="29" height="32"></a><em> Click
+on the icon for an interactive session.</em><br>
+</p>
+
+<p align="left">For a 3D view of the above scrollbar analysis,
+click <a
+href="2dlagrangesurface.html">here</a>.
+Unfortunately, there is no analog of this &quot;static&quot; 3D
+version for 3 variables, since we would need to plot in 4
+dimensions. Only the &quot;dynamic&quot; scrollbar analysis is
+possible for 3-variable problems. </p>
+
+<hr size="1" width="50%">
+
+<p align="left"><b>Example 4: Finding max/min subject to a
+constraint, 3 variables.</b></p>
+
+<p align="left"><img src="3dlgrng1.jpg" width="483" height="100">
+</p>
+
+<p align="left"><i>Solution.</i> As in the previous examples, we
+set <em>f(x,y,z) = a</em> and use DPGraph's scrollbar to change
+the value of <em>a</em>. As we scroll down, for each value of <em>a</em>,
+we get a level surface of <em>f</em>, here a plane, that moves in
+relation to the fixed surface representing the constraint
+equation. It is important here that we <em>verify the tangency</em>
+of a level surface to the constraint surface, before the
+corresponding value of <em>a</em> is claimed as either a max or
+min. If the graphs do not touch or if they cut through each
+other, then the value of <em>a</em> does <em>not</em> give a max
+or min value of <em>f</em>. It may be necessay to rotate the
+graph several times using the arrow keys in order to be sure that
+tangency in fact occurs. Click <a
+href="3dlagrange1.html">here</a>
+to see snapshots. </p>
+
+<p align="left"><a href="mcex4.dpg"><img src="scrsavr.gif"
+align="middle" border="0" width="29" height="32"></a><em> Click
+on the icon for an interactive session.</em><br>
+</p>
+
+<p align="left">The figure clearly shows that the function <em>f</em>
+has a maximum that is achieved at a unique point on the
+constraint surface. However, <em>f</em> has no minimum on the
+constraint surface, since the graph of f never leaves that
+surface. To see this analytically, set <em>y</em> = 0 and solve
+the constraint for <em>x</em> to get <em>x = 2-z</em><font
+size="2"><em>^2</em></font>; setting this <em>y</em> and <em>x</em>
+into <em>f</em> we obtain the expression <em>z + 4 - 2(z</em><font
+size="2"><em>^2</em></font><em>)</em> which approaches negative
+infinity as <em>z</em> does. Hence, <em>f </em>does not have a
+least value on the constraint surface. </p>
+
+<hr size="1" width="50%">
+
+<p align="left"><b>Example 5: Finding max/min subject to a
+constraint, 3 variables.</b></p>
+
+<p align="left"><img src="3dlgrng2.jpg" width="482" height="95"> </p>
+
+<p align="left"><i>Solution.</i> In this problem surfaces
+involved overlap, so it is difficult to see the where the
+constraint ellipsoid is tangent to a level surface of <em>f</em>.
+To overcome this problem, we increase the
+&quot;transparency&quot; in the DPGraph edit menu so that the
+inner surface shows through the outer surface. Now, proceeding as
+in Example 4 with the scrollbar, we obtain a series of critical
+points where level surfaces of <em>f</em> are tangent to the
+ellipsoid. Click <a
+href="3dlagrange2.html">here</a>
+to see the snapshots. <i>While scrolling, it is necessary to
+rotate the figure frequently to get a good visual estimate of
+tangency; alternately, we click &quot;Animate&quot; in DPGraph
+and then click &quot;continuously rotate&quot; so that the graph
+keeps turning as we scroll.</i> Careful scrolling shows the
+existence of 14 critical points, the first 2 of which give the
+maximum of <em>f</em> on the constraint ellipsoidal surface and
+the last 2 give the minimum of f on that surface. The snapshots
+mentioned above show 10 of these critical points, including those
+at which the maximum and the minimum values of <em>f</em> occur.
+The remaining 4 (not shown) occur simultaneously when <em>f(x,y,z)</em>
+is approximately equal to 1.3. </p>
+
+<p align="left"><a href="mcex5.dpg"><img src="scrsavr.gif"
+align="middle" border="0" width="29" height="32"></a><em> Click
+on the icon for an interactive session.</em></p>
+
+<p align="left">To see a movie of this process (if DPGraph or the
+Viewer is installed), click <a href="mcex5mv.dpg">here</a>. To
+get the full effect after you start the movie, click
+&quot;animate&quot; in the DPGraph toolbar, then
+&quot;continuously rotate&quot;.</p>
+
+<hr size="1" width="50%">
+
+<p align="left"><b>Extrema over compact regions: Non-smooth
+functions and boundaries.</b></p>
+
+<p>In the preceding examples, the function <em>f</em> is always
+smooth, and the same is true of the function <em>g</em> defining
+a constraint equation. However, from the vantage point of a
+DPGraph user, it is clear that none of this really matters. The
+next two examples show how graphical estimates afforded by the
+DPGraph apply in cases where standard methods fail. Again, let's
+begin with 2 variables. </p>
+
+<hr size="1" width="50%">
+
+<p align="left"><b>Example 6: Finding max/min over a compact
+region, non-smooth case.</b> <img src="mxmn2vra.jpg" width="464"
+height="103"> </p>
+
+<p align="left"><i>Solution.</i> Given that <em>f</em> must have
+a max and a min in the compact region, all we need to do is draw
+level curves of <em>f</em> from sufficiently high up that nothing
+yet appears within the region or on its boundary. Then come down
+and record the value of <em>f</em> when the FIRST contact is
+established between the region and a level curve (locations in
+the compact region where the maximum value of f occurs) and
+later, when the LAST contact occurs (locations where minimum of <em>f</em>
+occurs). Click <a
+href="maxmin2vara.html">here</a>
+to see 2D snapshots and a 3D equivalent. </p>
+
+<p align="left"><a href="mcex6.dpg"><img src="scrsavr.gif"
+align="middle" border="0" width="29" height="32"></a><em> Click
+on the icon for an interactive session.</em></p>
+
+<hr size="1" width="50%">
+
+<p align="left"><b>Example 7: Finding max/min on a compact
+region, 3 variable non-smooth case.</b></p>
+
+<p align="left"><img src="mxmn3vra.jpg" width="462" height="114">
+</p>
+
+<p align="left"><i>Solution.</i> The process is now familiar: Set
+<em>f(x,y,z) = a</em>, and scroll through the values of a. Click <a
+href="maxmin3vara.html">here</a>
+to see snapshots of the scrollbar process and find out what the
+maximum and the minimum values of <em>f</em> over the ball are. </p>
+
+<p align="left"><a href="mcex7.dpg"><img src="scrsavr.gif"
+align="middle" border="0" width="29" height="32"></a><em> Click
+on the icon for an interactive session</em>.</p>
+
+<hr>
+
+<p align="center"><font size="4">Part 2: Setting up Double and
+Triple Integrals</font></p>
+
+<p align="left"><font size="3">This is one of the more laborious
+tasks in multivariable calculus. In all but the simplest
+examples, graphing a region of integration, particularly in 3D
+space, is difficult and requires graphing software. The fact that
+the bounded regions in question are not always easily expressible
+as functions further complicates the situation. In addition, one
+often needs to detemine the curves or surfaces that make up the
+boundary of such a region or its projection into one of the
+coordinate planes, and this process usually requires calculation
+of intersection points of curves. </font></p>
+
+<p align="left"><font size="3">DPGraph can tackle all the
+plotting jobs invloved and also give good estimates of the
+crucial intersection points via its scrollbar. This eliminates
+the need for a calculator or numerical approximation software, at
+least for region sketching and the integral set up job - tasks
+that in the past have often dogged students and teachers alike.
+But no more! We illustrate with some examples, which are not
+meant to be comprehensive or even challenging mathematically.
+They should, however, point the interested reader in the right
+direction, where he or she can explore further and discover lots
+of interesting tidbits.</font></p>
+
+<hr size="1" width="50%">
+
+<p align="left"><font size="3"><img src="mcex8plr.jpg"
+width="673" height="132"></font></p>
+
+<p align="left"><font size="3"><em>Solution</em>. First, graph
+the two curves and the region they bound: </font></p>
+
+<p align="left"><font size="3"><img src="irregularpolararea.jpg"
+width="595" height="613"></font></p>
+
+<p align="left"><font size="3">Inserting the &quot;<em>z</em>
+&gt; 0&quot; automatically shades the region specified by the
+&quot;&amp;-separated&quot; inequalities. As noted above, finding
+the &quot;theta&quot; angle values is a breeze; the scrollbar
+values are usually good to one or two decimal places. If greater
+accuracy is desired, we can feed the DPGraph values into a
+calculation device as good &quot;initial guesses&quot; for Newton
+method-like estimation. Doing just that with Mathcad 8 (out of
+curiosity) gave me the values: 1.4500020329 and 4.9819627052. Not
+bad!</font></p>
+
+<p align="left"><a href="mcex8.dpg"><img src="scrsavr.gif"
+align="middle" border="0" width="29" height="32"></a> <em>Click
+the icon for an interactive session.</em></p>
+
+<p align="left"><font size="3">Now, for the double integral... in
+case you are not sure which &quot;<em>r</em>-curve&quot; goes on
+top in the integral and which to the bottom, just pick any theta
+value whose ray goes through the shaded region; the curve which
+is hit by the ray first, goes to the bottom! Armed with all this
+information, setting up our area double integral is a snap:</font></p>
+
+<p align="left"><font size="3"><img src="mcex8int.jpg"
+width="673" height="132"></font></p>
+
+<p align="left"><font size="3">The set up is complete! The
+curious reader can compute this integral using only a couple of
+trigonometric identities, and/or a computation device. The answer
+is approximately 4.974.</font></p>
+
+<hr size="1" width="50%">
+
+<p align="left"><font size="3"><strong>Example 9</strong>. (A
+triple integral set up)</font></p>
+
+<p align="left"><font size="3"><img src="mcex9vol.jpg"
+width="685" height="214"></font></p>
+
+<p align="left"><font size="3"><em>Solution.</em> First, we
+sketch region in question with the DPGraph to see what the
+relationships of the various surfaces and planes are to each
+other (which lies above, which below and which to the sides). For
+a sketch of this solid, the surfaces that bound it, and the
+solid's projections into coordinate axes, click </font><a
+href="volumeofsolid1.jpg"><font
+size="3">here</font></a><font size="3">. The projections into the
+<em>xy</em> and into the <em>yz </em>coordinate planes are
+obtained by setting the view to &quot;top&quot; or to
+&quot;side&quot;, respectively, and setting the perspective to
+&quot;false&quot;; the projection into <em>xz</em> plane (not
+shown) can be obtained by setting the view to &quot;front&quot;. </font></p>
+
+<p align="left"><font size="3">The two projections shown offer
+immediate insight as to how to set up the triple integral. We
+have a choice of two equally good starts, and I take the
+projection into the xy plane. By adding the term &quot;<em>y = a</em>&quot;
+to the equations in DPGraph, and carefully changing the value of <em>a</em>
+using the scrollbar, we can estimate the coordinates of the two
+intersection points of the quartic curve with the line <em>y = x</em>
+to be approximately 2.29 and -1.87. Click </font><a
+href="mcex9prj.jpg"><font
+size="3">here</font></a><font size="3"> to see both a detailed
+diagram and a way of improving upon the visual estimate (note
+that this new view of the xy projection is &quot;cleaner&quot;
+than the previous one, because we did not draw the solid itself;
+only the boundary curves in 2D, like Example 8 above). From the
+various diagrams above, the integral is now easy to write down:</font></p>
+
+<p align="left"><font size="3"><img src="mcex9int.jpg"
+width="601" height="61"></font></p>
+
+<hr size="1" width="50%">
+
+<p align="left"><img src="mcex10st.jpg" width="626" height="202"></p>
+
+<p align="left"><em>Solution</em>. It is relatively simple to
+graph the solid region; simply enter the above equations into the
+DPGraph as you see them here, or first convert to
+polar-cylindrical coordinates. Either way, a good representation
+of the solid region is obtained. There are two ways in which we
+can do this: First, we can graph all four surfaces (the cylinders
+and the paraboloids) within one coordinate system (click <a
+href="mcex10a.jpg">here</a> to see a graph) or, using
+inequalities, we can graph the solid itself (click <a
+href="mcex10b.jpg">here</a> for a graph).</p>
+
+<p align="left"><a href="mcex10.dpg"><img src="scrsavr.gif"
+align="middle" border="0" width="29" height="32"></a> <em>Click
+the icon for an interactive session.</em></p>
+
+<p align="left"><em><img src="mcex10in.jpg" width="644"
+height="287"></em></p>
+
+<hr size="4" width="80%">
+
+<p align="left"><a href="index.html">HOME</a> </p>
+
+<p align="left"><a
+href="http://www.mas.vcu.edu/~sedaghat/m307/welcome307.html">VCU
+Math 307</a> </p>
+</body>
+
+<!-- Mirrored from www.dpgraph.com/MCExamples.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 May 2018 23:39:23 GMT -->
+</html>
